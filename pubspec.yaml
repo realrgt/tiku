@@ -1,0 +1,28 @@
+name: a_tiku
+description: A new Flutter application.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  dio: ^4.0.0
+  flutter_modular: ^3.3.1
+  equatable: ^2.0.3
+  dartz: ^0.9.2
+  flutter_bloc: ^7.0.1
+  shared_preferences: ^2.0.6
+  data_connection_checker: ^0.3.4
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  mockito: ^5.0.12
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
