@@ -1,12 +1,12 @@
-import 'package:a_tiku/app/core/errors/failure.dart';
-import 'package:a_tiku/app/core/usecases/usecase.dart';
-import 'package:a_tiku/app/modules/country/domain/entities/country.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/errors/failure.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../entities/country.dart';
 import '../repositories/country_repository.dart';
 
-class GetAllCountries implements Usecase<List<Country>, NoParams> {
+class GetAllCountries implements IUsecase<List<Country>, NoParams> {
   ICountryRepository repository;
   GetAllCountries({required this.repository});
 
