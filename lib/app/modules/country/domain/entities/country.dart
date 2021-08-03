@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 
 class Country extends Equatable {
   final String name;
-  final String population;
+  final int population;
   final String region;
   final String capital;
-  final String flag;
+  final String flagURL;
   final List<String> currencies;
   final List<String> languages;
 
@@ -14,7 +14,7 @@ class Country extends Equatable {
     required this.population,
     required this.region,
     required this.capital,
-    required this.flag,
+    required this.flagURL,
     required this.currencies,
     required this.languages,
   });
@@ -26,7 +26,7 @@ class Country extends Equatable {
       population,
       region,
       capital,
-      flag,
+      flagURL,
       currencies,
       languages,
     ];
