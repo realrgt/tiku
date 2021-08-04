@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Mozambique",
+    "population": 2600000,
+    "region": "Africa",
+    "capital": "Maputo",
+    "flagURL": "Some-fake-URL",
+    "currencies": ["MZN", "RAND"],
+    "languages": ["pt", "en", "xg"]
+  },
+  {
+    "name": "South Africa",
+    "population": 7600000,
+    "region": "Africa",
+    "capital": "Pretoria",
+    "flagURL": "Some-fake-URL",
+    "currencies": ["RAND", "MZN"],
+    "languages": ["en", "zl", "ts"]
+  }
+]
