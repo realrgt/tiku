@@ -43,13 +43,22 @@ class CountryRepositoryImpl implements ICountryRepository {
   Future<Either<Failure, List<Country>>> filterCountriesByRegion(
     String region,
   ) async {
-    await networkStatus.isConnected;
-    try {
-      final filteredCountries =
-          await remoteDatasource.filterCountriesByRegion(region);
-      return Right(filteredCountries);
-    } on ServerException {
-      return Left(ServerFailure());
+    if (await networkStatus.isConnected) {
+      try {
+        final filteredCountries =
+            await remoteDatasource.filterCountriesByRegion(region);
+        return Right(filteredCountries);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final filteredCountriesInCache =
+            await localDatasource.filterCountriesByRegion(region);
+        return Right(filteredCountriesInCache);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
     }
   }
 
