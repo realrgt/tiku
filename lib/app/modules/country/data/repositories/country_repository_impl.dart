@@ -41,9 +41,16 @@ class CountryRepositoryImpl implements ICountryRepository {
 
   @override
   Future<Either<Failure, List<Country>>> filterCountriesByRegion(
-      String region) {
-    // TODO: implement filterCountriesByRegion
-    throw UnimplementedError();
+    String region,
+  ) async {
+    await networkStatus.isConnected;
+    try {
+      final filteredCountries =
+          await remoteDatasource.filterCountriesByRegion(region);
+      return Right(filteredCountries);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 
   @override

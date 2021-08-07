@@ -56,6 +56,8 @@ void main() {
     ),
   ];
 
+  final tRegion = 'Africa';
+
   test(
     'should check if the device is online when calling repository',
     () async {
@@ -155,6 +157,76 @@ void main() {
           final result = await repository.getAllCountries();
           // assert
           verifyZeroInteractions(mockCountryRemoteDatasource);
+          expect(result, equals(Left(CacheFailure())));
+        },
+      );
+    });
+  });
+
+  group('filterCountriesByRegion', () {
+    group('device is online', () {
+      test(
+        'should get data by region when remote datasource is called successfully',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => true);
+          when(() => mockCountryRemoteDatasource.filterCountriesByRegion(any()))
+              .thenAnswer((_) async => tCountries);
+          // act
+          final result = await repository.filterCountriesByRegion(tRegion);
+          // assert
+          verify(() =>
+              mockCountryRemoteDatasource.filterCountriesByRegion(tRegion));
+          expect(result, equals(Right(tCountries)));
+        },
+      );
+
+      test(
+        'should return a ServerFailure when remote datasource is unsuccessful',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => true);
+          when(() => mockCountryRemoteDatasource.filterCountriesByRegion(any()))
+              .thenThrow(ServerException());
+          // act
+          final result = await repository.filterCountriesByRegion(tRegion);
+          // assert
+          expect(result, equals(Left(ServerFailure())));
+        },
+      );
+    });
+    group('device is offline', () {
+      test(
+        'should return filtered locally cached data when the cache data is present',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => false);
+          when(() => mockCountryLocalDatasource.filterCountriesByRegion(any()))
+              .thenAnswer((_) async => tCountries);
+          // act
+          final result = await repository.filterCountriesByRegion(tRegion);
+          // assert
+          verifyZeroInteractions(mockCountryRemoteDatasource);
+          verify(() =>
+              mockCountryLocalDatasource.filterCountriesByRegion(tRegion));
+          expect(result, equals(Right(tCountries)));
+        },
+      );
+
+      test(
+        'should return CacheFailure when cache data is not present',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => false);
+          when(() => mockCountryLocalDatasource.filterCountriesByRegion(any()))
+              .thenThrow(CacheException());
+          // act
+          final result = await repository.filterCountriesByRegion(tRegion);
+          // assert
           expect(result, equals(Left(CacheFailure())));
         },
       );
