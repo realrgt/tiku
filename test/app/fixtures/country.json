@@ -1,0 +1,9 @@
+{
+  "name": "fake-name",
+  "population": 12,
+  "region": "fake-region",
+  "capital": "fake-capital",
+  "flagURL": "fake-URL",
+  "currencies": ["fake-c1, fake-c2"],
+  "languages": ["fake-l1, fake-l2"]
+}
