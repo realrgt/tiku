@@ -64,8 +64,24 @@ class CountryRepositoryImpl implements ICountryRepository {
 
   @override
   Future<Either<Failure, List<Country>>> searchCountriesByName(
-      String countryName) {
-    // TODO: implement searchCountriesByName
-    throw UnimplementedError();
+    String keyword,
+  ) async {
+    if (await networkStatus.isConnected) {
+      try {
+        final matchedCountries =
+            await remoteDatasource.searchCountriesByName(keyword);
+        return Right(matchedCountries);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final matchedCountriesInCache =
+            await localDatasource.searchCountriesByName(keyword);
+        return Right(matchedCountriesInCache);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
   }
 }
