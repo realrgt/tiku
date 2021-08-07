@@ -6,5 +6,5 @@ import '../entities/country.dart';
 abstract class ICountryRepository {
   Future<Either<Failure, List<Country>>> getAllCountries();
   Future<Either<Failure, List<Country>>> filterCountriesByRegion(String region);
-  Future<Either<Failure, List<Country>>> searchCountriesByName(String countryName);
+  Future<Either<Failure, List<Country>>> searchCountriesByName(String keyword);
 }

@@ -56,6 +56,9 @@ void main() {
     ),
   ];
 
+  final tRegion = 'Africa';
+  final tKeyword = 'Moz';
+
   test(
     'should check if the device is online when calling repository',
     () async {
@@ -75,7 +78,7 @@ void main() {
   group('getAllCountries', () {
     group('device is online', () {
       test(
-        'should get data when remote datasource is called successfully',
+        'should return data when remote datasource is called successfully',
         () async {
           // arrange
           when(() => mockNetworkStatus.isConnected)
@@ -155,6 +158,148 @@ void main() {
           final result = await repository.getAllCountries();
           // assert
           verifyZeroInteractions(mockCountryRemoteDatasource);
+          expect(result, equals(Left(CacheFailure())));
+        },
+      );
+    });
+  });
+
+  group('filterCountriesByRegion', () {
+    group('device is online', () {
+      test(
+        'should return data by region when remote datasource is called successfully',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => true);
+          when(() => mockCountryRemoteDatasource.filterCountriesByRegion(any()))
+              .thenAnswer((_) async => tCountries);
+          // act
+          final result = await repository.filterCountriesByRegion(tRegion);
+          // assert
+          verify(() =>
+              mockCountryRemoteDatasource.filterCountriesByRegion(tRegion));
+          expect(result, equals(Right(tCountries)));
+        },
+      );
+
+      test(
+        'should return a ServerFailure when remote datasource is unsuccessful',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => true);
+          when(() => mockCountryRemoteDatasource.filterCountriesByRegion(any()))
+              .thenThrow(ServerException());
+          // act
+          final result = await repository.filterCountriesByRegion(tRegion);
+          // assert
+          expect(result, equals(Left(ServerFailure())));
+        },
+      );
+    });
+    group('device is offline', () {
+      test(
+        'should return filtered locally cached data when the cache data is present',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => false);
+          when(() => mockCountryLocalDatasource.filterCountriesByRegion(any()))
+              .thenAnswer((_) async => tCountries);
+          // act
+          final result = await repository.filterCountriesByRegion(tRegion);
+          // assert
+          verifyZeroInteractions(mockCountryRemoteDatasource);
+          verify(() =>
+              mockCountryLocalDatasource.filterCountriesByRegion(tRegion));
+          expect(result, equals(Right(tCountries)));
+        },
+      );
+
+      test(
+        'should return CacheFailure when cache data is not present',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => false);
+          when(() => mockCountryLocalDatasource.filterCountriesByRegion(any()))
+              .thenThrow(CacheException());
+          // act
+          final result = await repository.filterCountriesByRegion(tRegion);
+          // assert
+          expect(result, equals(Left(CacheFailure())));
+        },
+      );
+    });
+  });
+
+  group('searchCountriesByName', () {
+    group('device is online', () {
+      test(
+        '''should return data matching the provided keyword when 
+        the remote datasource is called successfully''',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => true);
+          when(() => mockCountryRemoteDatasource.searchCountriesByName(any()))
+              .thenAnswer((_) async => tCountries);
+          // act
+          final result = await repository.searchCountriesByName(tKeyword);
+          // assert
+          verify(() =>
+              mockCountryRemoteDatasource.searchCountriesByName(tKeyword));
+          expect(result, equals(Right(tCountries)));
+        },
+      );
+
+      test(
+        'should return a ServerFailure when remote datasource is unsuccessful',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => true);
+          when(() => mockCountryRemoteDatasource.searchCountriesByName(any()))
+              .thenThrow(ServerException());
+          // act
+          final result = await repository.searchCountriesByName(tKeyword);
+          // assert
+          expect(result, equals(Left(ServerFailure())));
+        },
+      );
+    });
+    group('device is offline', () {
+      test(
+        '''should return locally cached data that match to the provided 
+        keyword when the cache data is present''',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => false);
+          when(() => mockCountryLocalDatasource.searchCountriesByName(any()))
+              .thenAnswer((_) async => tCountries);
+          // act
+          final result = await repository.searchCountriesByName(tKeyword);
+          // assert
+          verifyZeroInteractions(mockCountryRemoteDatasource);
+          verify(
+              () => mockCountryLocalDatasource.searchCountriesByName(tKeyword));
+          expect(result, equals(Right(tCountries)));
+        },
+      );
+
+      test(
+        'should return CacheFailure when cache data is not present',
+        () async {
+          // arrange
+          when(() => mockNetworkStatus.isConnected)
+              .thenAnswer((_) async => false);
+          when(() => mockCountryLocalDatasource.searchCountriesByName(any()))
+              .thenThrow(CacheException());
+          // act
+          final result = await repository.searchCountriesByName(tKeyword);
+          // assert
           expect(result, equals(Left(CacheFailure())));
         },
       );
