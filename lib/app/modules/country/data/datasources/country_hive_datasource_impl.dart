@@ -5,7 +5,6 @@ import '../../../../core/util/constants.dart';
 import '../../domain/entities/country.dart';
 import '../models/country_model.dart';
 import 'country_local_datasource.dart';
-import 'dart:collection';
 
 class CountryHiveDatasourceImpl implements ICountryLocalDatasource {
   final HiveInterface hiveInterface;
@@ -43,9 +42,11 @@ class CountryHiveDatasourceImpl implements ICountryLocalDatasource {
   }
 
   @override
-  Future<List<CountryModel>> searchCountriesByName(String keyword) {
-    // TODO: implement searchCountriesByName
-    throw UnimplementedError();
+  Future<List<CountryModel>> searchCountriesByName(String keyword) async {
+    final countries = await this.getAllCountries();
+    final countriesMatched =
+        countries.where((c) => c.name.contains(keyword)).toList();
+    return countriesMatched;
   }
 
   @override
