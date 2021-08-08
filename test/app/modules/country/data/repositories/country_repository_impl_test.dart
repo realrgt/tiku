@@ -3,8 +3,8 @@ import 'package:a_tiku/app/core/errors/failure.dart';
 import 'package:a_tiku/app/core/network/network_status.dart';
 import 'package:a_tiku/app/modules/country/data/datasources/country_local_datasource.dart';
 import 'package:a_tiku/app/modules/country/data/datasources/country_remote_datasource.dart';
+import 'package:a_tiku/app/modules/country/data/models/country_model.dart';
 import 'package:a_tiku/app/modules/country/data/repositories/country_repository_impl.dart';
-import 'package:a_tiku/app/modules/country/domain/entities/country.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -36,7 +36,7 @@ void main() {
   });
 
   final tCountries = [
-    Country(
+    CountryModel(
       name: 'Moz',
       population: 26000,
       region: 'Africa',
@@ -45,7 +45,7 @@ void main() {
       currencies: ['MZN', 'USD', 'ZAR'],
       languages: ['pt', 'xt', 'xg'],
     ),
-    Country(
+    CountryModel(
       name: 'Ang',
       population: 16000,
       region: 'Africa',
