@@ -115,4 +115,53 @@ void main() {
       },
     );
   });
+
+  group('searchCountriesByName', () {
+    final tKeyword = 'moz';
+    test(
+      'should return countries matching to the provided keyword when response code is 200 (success)',
+      () async {
+        // arrange
+        when(() => mockDioClient.get(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(
+              path: 'https://restcountries.eu/rest/v2/name/$tKeyword',
+            ),
+            data: fixture('countries.json'),
+            statusCode: 200,
+          ),
+        );
+        // act
+        final result = await datasource.searchCountriesByName(tKeyword);
+        // assert final tCountries
+        final expected = jsonDecode(fixture('countries.json'))
+            .map((e) => CountryModel.fromJson(e))
+            .toList();
+
+        verify(() => mockDioClient
+            .get('https://restcountries.eu/rest/v2/name/$tKeyword'));
+        expect(result, equals(expected));
+      },
+    );
+
+    test(
+      'should throw a ServerException when the response code aint 200 (failure)',
+      () async {
+        // arrange
+        when(() => mockDioClient.get(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(
+              path: 'https://restcountries.eu/rest/v2/name/$tKeyword',
+            ),
+            data: 'Something went wrong',
+            statusCode: 400,
+          ),
+        );
+        // act
+        final call = datasource.getAllCountries;
+        // assert final tCountries
+        expect(() => call(), throwsA(isA<ServerException>()));
+      },
+    );
+  });
 }

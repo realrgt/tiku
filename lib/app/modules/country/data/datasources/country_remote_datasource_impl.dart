@@ -12,8 +12,19 @@ class CountryRemoteDatasourceImpl implements ICountryRemoteDatasource {
   CountryRemoteDatasourceImpl(this.client);
 
   @override
-  Future<List<CountryModel>> getAllCountries() async {
-    final response = await client.get('https://restcountries.eu/rest/v2/all');
+  Future<List<CountryModel>> getAllCountries() =>
+      _getCountries('https://restcountries.eu/rest/v2/all');
+
+  @override
+  Future<List<CountryModel>> filterCountriesByRegion(String region) =>
+      _getCountries('https://restcountries.eu/rest/v2/region/$region');
+
+  @override
+  Future<List<CountryModel>> searchCountriesByName(String keyword) =>
+      _getCountries('https://restcountries.eu/rest/v2/name/$keyword');
+
+  Future<List<CountryModel>> _getCountries(String url) async {
+    final response = await client.get(url);
 
     if (response.statusCode != 200) throw ServerException();
 
@@ -21,24 +32,5 @@ class CountryRemoteDatasourceImpl implements ICountryRemoteDatasource {
     List<CountryModel> countries =
         data.map((e) => CountryModel.fromJson(e)).toList();
     return countries;
-  }
-
-  @override
-  Future<List<CountryModel>> filterCountriesByRegion(String region) async {
-    final response =
-        await client.get('https://restcountries.eu/rest/v2/region/$region');
-
-    if (response.statusCode != 200) throw ServerException();
-
-    List data = json.decode(response.data);
-    List<CountryModel> countries =
-        data.map((e) => CountryModel.fromJson(e)).toList();
-    return countries;
-  }
-
-  @override
-  Future<List<CountryModel>> searchCountriesByName(String keyword) async {
-    // TODO: implement searchCountriesByName
-    throw UnimplementedError();
   }
 }
