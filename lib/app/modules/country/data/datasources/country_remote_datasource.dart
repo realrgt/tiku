@@ -1,7 +1,7 @@
-import '../../domain/entities/country.dart';
+import '../models/country_model.dart';
 
 abstract class ICountryRemoteDatasource {
-  Future<List<Country>> getAllCountries();
-  Future<List<Country>> filterCountriesByRegion(String region);
-  Future<List<Country>> searchCountriesByName(String keyword);
+  Future<List<CountryModel>> getAllCountries();
+  Future<List<CountryModel>> filterCountriesByRegion(String region);
+  Future<List<CountryModel>> searchCountriesByName(String keyword);
 }
