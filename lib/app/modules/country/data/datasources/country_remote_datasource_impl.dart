@@ -25,8 +25,15 @@ class CountryRemoteDatasourceImpl implements ICountryRemoteDatasource {
 
   @override
   Future<List<CountryModel>> filterCountriesByRegion(String region) async {
-    // TODO: implement filterCountriesByRegion
-    throw UnimplementedError();
+    final response =
+        await client.get('https://restcountries.eu/rest/v2/region/$region');
+
+    if (response.statusCode != 200) throw ServerException();
+
+    List data = json.decode(response.data);
+    List<CountryModel> countries =
+        data.map((e) => CountryModel.fromJson(e)).toList();
+    return countries;
   }
 
   @override

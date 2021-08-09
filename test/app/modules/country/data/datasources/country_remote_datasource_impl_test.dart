@@ -66,4 +66,53 @@ void main() {
       },
     );
   });
+
+  group('filterCountriesByRegion', () {
+    final tRegion = 'europe';
+    test(
+      'should return countries in the provided region when response code is 200 (success)',
+      () async {
+        // arrange
+        when(() => mockDioClient.get(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(
+              path: 'https://restcountries.eu/rest/v2/region/$tRegion',
+            ),
+            data: fixture('countries.json'),
+            statusCode: 200,
+          ),
+        );
+        // act
+        final result = await datasource.filterCountriesByRegion(tRegion);
+        // assert final tCountries
+        final expected = jsonDecode(fixture('countries.json'))
+            .map((e) => CountryModel.fromJson(e))
+            .toList();
+
+        verify(() => mockDioClient
+            .get('https://restcountries.eu/rest/v2/region/$tRegion'));
+        expect(result, equals(expected));
+      },
+    );
+
+    test(
+      'should throw a ServerException when the response code aint 200 (failure)',
+      () async {
+        // arrange
+        when(() => mockDioClient.get(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(
+              path: 'https://restcountries.eu/rest/v2/region/$tRegion',
+            ),
+            data: 'Something went wrong',
+            statusCode: 400,
+          ),
+        );
+        // act
+        final call = datasource.getAllCountries;
+        // assert final tCountries
+        expect(() => call(), throwsA(isA<ServerException>()));
+      },
+    );
+  });
 }
