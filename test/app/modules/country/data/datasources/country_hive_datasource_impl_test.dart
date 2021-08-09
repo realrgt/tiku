@@ -29,6 +29,26 @@ void main() {
 
   final tRegion = 'Africa';
   final tKeyword = 'Africa';
+  final tCountries = [
+    CountryModel(
+      name: 'Moz',
+      population: 26000,
+      region: 'Africa',
+      capital: 'Maputo',
+      flagURL: 'fakeURL',
+      currencies: ['MZN', 'USD', 'ZAR'],
+      languages: ['pt', 'xt', 'xg'],
+    ),
+    CountryModel(
+      name: 'Ang',
+      population: 16000,
+      region: 'Africa',
+      capital: 'Luanda',
+      flagURL: 'fakeURL',
+      currencies: ['QNZ', 'USD', 'MZN'],
+      languages: ['pt', 'mg'],
+    ),
+  ];
   group('getAllCountries', () {
     test(
       'should return countries when they are present in cache',
@@ -99,6 +119,23 @@ void main() {
         final result = await datasource.searchCountriesByName(tKeyword);
         // assert
         expect(result, isA<List<CountryModel>>());
+      },
+    );
+  });
+
+  group('cacheCoutries', () {
+    test(
+      'should place countries to cache when there is no cached data',
+      () async {
+        // arrange
+        when(() => mockHiveInterface.openBox(any()))
+            .thenAnswer((_) async => mockHiveBox);
+        when(() => mockHiveBox.isNotEmpty).thenReturn(true);
+        when(() => mockHiveBox.addAll(any())).thenAnswer((_) async => [0, 1]);
+        // act
+        await datasource.cacheCoutries(tCountries);
+        // assert
+        verify(() => mockHiveBox.addAll(any())).called(1);
       },
     );
   });
