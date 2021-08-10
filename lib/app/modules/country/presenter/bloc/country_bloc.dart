@@ -2,14 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/util/constants.dart';
-import '../../domain/usecases/filter_countries_by_region.dart';
+import '../../domain/usecases/filter_countries_by_region.dart' as f;
 import '../../domain/usecases/get_all_countries.dart';
 import '../../domain/usecases/search_countries_by_name.dart';
 import 'bloc.dart';
 
 class CountryBloc extends Bloc<CountryEvent, CountryState> {
   final GetAllCountries getAllCountries;
-  final FilterCountriesByRegion filterCountriesByRegion;
+  final f.FilterCountriesByRegion filterCountriesByRegion;
   final SearchCountriesByName searchCountriesByName;
 
   CountryBloc({
@@ -26,6 +26,15 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
       yield CountryInitial();
       yield CountryLoading();
       final failureOrCountries = await getAllCountries(NoParams());
+      yield failureOrCountries.fold(
+        (failure) => CountryError(message: _mapFailureToMessage(failure)),
+        (countries) => CountryLoaded(countries: countries),
+      );
+    } else if (event is FetchCountriesInRegion) {
+      yield CountryInitial();
+      yield CountryLoading();
+      final failureOrCountries =
+          await filterCountriesByRegion(f.Params(region: event.region));
       yield failureOrCountries.fold(
         (failure) => CountryError(message: _mapFailureToMessage(failure)),
         (countries) => CountryLoaded(countries: countries),

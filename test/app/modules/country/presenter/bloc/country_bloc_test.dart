@@ -1,7 +1,8 @@
 import 'package:a_tiku/app/core/errors/failure.dart';
 import 'package:a_tiku/app/core/util/constants.dart';
 import 'package:a_tiku/app/modules/country/domain/entities/country.dart';
-import 'package:a_tiku/app/modules/country/domain/usecases/filter_countries_by_region.dart';
+import 'package:a_tiku/app/modules/country/domain/usecases/filter_countries_by_region.dart'
+    as f;
 import 'package:a_tiku/app/modules/country/domain/usecases/get_all_countries.dart';
 import 'package:a_tiku/app/modules/country/domain/usecases/search_countries_by_name.dart';
 import 'package:a_tiku/app/modules/country/presenter/bloc/bloc.dart';
@@ -13,7 +14,7 @@ import 'package:mocktail/mocktail.dart';
 class MockGetAllCountries extends Mock implements GetAllCountries {}
 
 class MockFilterCountriesByRegion extends Mock
-    implements FilterCountriesByRegion {}
+    implements f.FilterCountriesByRegion {}
 
 class MockSearchCountriesByName extends Mock implements SearchCountriesByName {}
 
@@ -122,7 +123,68 @@ void main() {
     );
   });
 
-  group('FetchCountriesInRegion', () {});
+  group('FetchCountriesInRegion', () {
+    registerFallbackValue(f.Params(region: 'Africa'));
+    final tRegion = 'Africa';
+    test(
+      'should get data for the filterCountriesByRegion usecase',
+      () async {
+        // arrange
+        when(() => mockFilterCountriesByRegion(any()))
+            .thenAnswer((_) async => Right(tCountries));
+        // act
+        bloc.add(FetchCountriesInRegion(region: tRegion));
+        await untilCalled(() => mockFilterCountriesByRegion(any()));
+        // assert
+        verify(() => mockFilterCountriesByRegion(f.Params(region: tRegion)));
+      },
+    );
+
+    blocTest<CountryBloc, CountryState>(
+      'should emit [CountryLoading, CountryLoaded] when data is gotten successfully',
+      build: () {
+        when(() => mockFilterCountriesByRegion(any()))
+            .thenAnswer((_) async => Right(tCountries));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(FetchCountriesInRegion(region: tRegion)),
+      expect: () => [
+        CountryInitial(),
+        CountryLoading(),
+        CountryLoaded(countries: tCountries),
+      ],
+    );
+
+    blocTest<CountryBloc, CountryState>(
+      'should emit [CountryLoading, CountryError] when getting data fails',
+      build: () {
+        when(() => mockFilterCountriesByRegion(any()))
+            .thenAnswer((_) async => Left(ServerFailure()));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(FetchCountriesInRegion(region: tRegion)),
+      expect: () => [
+        CountryInitial(),
+        CountryLoading(),
+        CountryError(message: SERVER_FAILURE_MESSAGE),
+      ],
+    );
+
+    blocTest<CountryBloc, CountryState>(
+      'should emit [CountryLoading, CountryError] with a proper message for the error when getting data fails',
+      build: () {
+        when(() => mockFilterCountriesByRegion(any()))
+            .thenAnswer((_) async => Left(CacheFailure()));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(FetchCountriesInRegion(region: tRegion)),
+      expect: () => [
+        CountryInitial(),
+        CountryLoading(),
+        CountryError(message: CACHE_FAILURE_MESSAGE),
+      ],
+    );
+  });
 
   group('SearchCountries', () {});
 }
