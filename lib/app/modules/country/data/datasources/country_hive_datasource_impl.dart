@@ -9,12 +9,8 @@ import 'country_local_datasource.dart';
 
 class CountryHiveDatasourceImpl implements ICountryLocalDatasource {
   final HiveInterface hiveInterface;
-  final Box hiveBox;
 
-  CountryHiveDatasourceImpl({
-    required this.hiveInterface,
-    required this.hiveBox,
-  });
+  CountryHiveDatasourceImpl({required this.hiveInterface});
 
   @override
   Future<List<CountryModel>> getAllCountries() async {
@@ -24,7 +20,7 @@ class CountryHiveDatasourceImpl implements ICountryLocalDatasource {
 
     List<CountryModel> countries = [];
     for (var i = 0; i < box.length; i++) {
-      final countryMap = hiveBox.getAt(i);
+      final countryMap = box.getAt(i);
       final country = CountryModel.fromJson(countryMap);
       countries.add(country);
     }
@@ -55,7 +51,7 @@ class CountryHiveDatasourceImpl implements ICountryLocalDatasource {
     final box = await hiveInterface.openBox(BOX_COUNTRIES);
     if (box.isNotEmpty) {
       final countriesJSON = _getListJSON(countries);
-      await hiveBox.addAll(countriesJSON);
+      await box.addAll(countriesJSON);
     }
   }
 

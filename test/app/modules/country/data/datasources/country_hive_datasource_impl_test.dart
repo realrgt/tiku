@@ -21,10 +21,7 @@ void main() {
   setUp(() {
     mockHiveInterface = MockHiveInterface();
     mockHiveBox = MockHiveBox();
-    datasource = CountryHiveDatasourceImpl(
-      hiveInterface: mockHiveInterface,
-      hiveBox: mockHiveBox,
-    );
+    datasource = CountryHiveDatasourceImpl(hiveInterface: mockHiveInterface);
   });
 
   final tRegion = 'Africa';
