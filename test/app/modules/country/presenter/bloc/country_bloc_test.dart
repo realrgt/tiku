@@ -186,5 +186,66 @@ void main() {
     );
   });
 
-  group('SearchCountries', () {});
+  group('SearchCountries', () {
+    registerFallbackValue(Params(keyword: 'Moz'));
+    final tKeyword = 'Moz';
+    test(
+      'should get data for the searchCountriesByName usecase',
+      () async {
+        // arrange
+        when(() => mockSearchCountriesByName(any()))
+            .thenAnswer((_) async => Right(tCountries));
+        // act
+        bloc.add(SearchCountries(keyword: tKeyword));
+        await untilCalled(() => mockSearchCountriesByName(any()));
+        // assert
+        verify(() => mockSearchCountriesByName(Params(keyword: tKeyword)));
+      },
+    );
+
+    blocTest<CountryBloc, CountryState>(
+      'should emit [CountryLoading, CountryLoaded] when data is gotten successfully',
+      build: () {
+        when(() => mockSearchCountriesByName(any()))
+            .thenAnswer((_) async => Right(tCountries));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(SearchCountries(keyword: tKeyword)),
+      expect: () => [
+        CountryInitial(),
+        CountryLoading(),
+        CountryLoaded(countries: tCountries),
+      ],
+    );
+
+    blocTest<CountryBloc, CountryState>(
+      'should emit [CountryLoading, CountryError] when getting data fails',
+      build: () {
+        when(() => mockSearchCountriesByName(any()))
+            .thenAnswer((_) async => Left(ServerFailure()));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(SearchCountries(keyword: tKeyword)),
+      expect: () => [
+        CountryInitial(),
+        CountryLoading(),
+        CountryError(message: SERVER_FAILURE_MESSAGE),
+      ],
+    );
+
+    blocTest<CountryBloc, CountryState>(
+      'should emit [CountryLoading, CountryError] with a proper message for the error when getting data fails',
+      build: () {
+        when(() => mockSearchCountriesByName(any()))
+            .thenAnswer((_) async => Left(CacheFailure()));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(SearchCountries(keyword: tKeyword)),
+      expect: () => [
+        CountryInitial(),
+        CountryLoading(),
+        CountryError(message: CACHE_FAILURE_MESSAGE),
+      ],
+    );
+  });
 }
