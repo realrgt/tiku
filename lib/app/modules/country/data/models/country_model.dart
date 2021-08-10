@@ -25,9 +25,13 @@ class CountryModel extends Country {
       population: map['population'],
       region: map['region'],
       capital: map['capital'],
-      flagURL: map['flagURL'],
-      currencies: List<String>.from(map['currencies']),
-      languages: List<String>.from(map['languages']),
+      flagURL: map['flag'],
+      currencies: List<String>.from(
+        (map['currencies'] as List).map((e) => e['code']).toList(),
+      ),
+      languages: List<String>.from(
+        (map['languages'] as List).map((e) => e['name']).toList(),
+      ),
     );
   }
 

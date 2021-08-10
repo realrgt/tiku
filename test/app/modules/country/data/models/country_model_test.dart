@@ -8,13 +8,13 @@ import '../../../../fixtures/fixtures_reader.dart';
 
 void main() {
   final tCountryModel = CountryModel(
-    name: 'fake-name',
-    population: 12,
-    region: 'fake-region',
-    capital: 'fake-capital',
-    flagURL: 'fake-URL',
-    currencies: ['fake-c1, fake-c2'],
-    languages: ['fake-l1, fake-l2'],
+    name: 'Mozambique',
+    population: 26423700,
+    region: 'Africa',
+    capital: 'Maputo',
+    flagURL: 'https://restcountries.eu/data/moz.svg',
+    currencies: ['MZN'],
+    languages: ['Portuguese'],
   );
 
   final tCountryJSON = json.decode(fixture('country.json'));
@@ -45,7 +45,16 @@ void main() {
         // act
         final result = tCountryModel.toJson();
         // assert
-        expect(result, equals(tCountryJSON));
+        final expected = {
+          'name': 'Mozambique',
+          'population': 26423700,
+          'region': 'Africa',
+          'capital': 'Maputo',
+          'flagURL': 'https://restcountries.eu/data/moz.svg',
+          'currencies': ['MZN'],
+          'languages': ['Portuguese']
+        };
+        expect(result, equals(expected));
       },
     );
   });
