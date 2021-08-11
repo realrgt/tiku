@@ -11,7 +11,7 @@ class CountriesPage extends StatelessWidget {
         SizedBox(height: 10.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
-          child: Placeholder(fallbackHeight: 45.0),
+          child: SearchInput(),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),

@@ -22,7 +22,7 @@ class CountryCard extends StatelessWidget {
                 Label('Population: 26232256'),
                 Label('Region: Africa'),
                 Label('Capital: Maputo'),
-                SizedBox(height: 20)
+                SizedBox(height: 20),
               ],
             ),
           )
