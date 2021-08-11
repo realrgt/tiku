@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../core/network/network_status.dart';
@@ -14,6 +13,7 @@ import 'domain/usecases/filter_countries_by_region.dart';
 import 'domain/usecases/get_all_countries.dart';
 import 'domain/usecases/search_countries_by_name.dart';
 import 'presenter/bloc/bloc.dart';
+import 'presenter/pages/countries_page.dart';
 
 class CountryModule extends Module {
   @override
@@ -53,6 +53,6 @@ class CountryModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute(Modular.initialRoute, child: (_, __) => Scaffold()),
+        ChildRoute(Modular.initialRoute, child: (_, __) => CountriesPage()),
       ];
 }
