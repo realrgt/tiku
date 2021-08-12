@@ -9,7 +9,7 @@ final appThemeData = {
   ),
   AppTheme.Dark: ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.green[700],
-    cardColor: Colors.green[500],
+    primaryColor: Colors.red[700],
+    cardColor: Colors.red[500],
   ),
 };
