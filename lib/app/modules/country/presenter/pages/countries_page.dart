@@ -11,12 +11,18 @@ class CountriesPage extends StatelessWidget {
         SizedBox(height: 10.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
-          child: SearchInput(),
+          // child: SearchInput(),
+          child: Row(
+            children: [
+              Expanded(flex: 12, child: SearchInput()),
+              Expanded(child: DropDown())
+            ],
+          ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
-          child: Placeholder(fallbackHeight: 45.0),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
+        //   child: DropDown(),
+        // ),
         SizedBox(height: 10.0),
         ListView.builder(
           shrinkWrap: true,

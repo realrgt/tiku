@@ -17,7 +17,7 @@ class SearchInput extends StatelessWidget {
             Icons.search,
             color: Colors.grey,
           ),
-          hintText: 'Código',
+          hintText: 'Search for a country...',
           hintStyle: TextStyle(color: Colors.grey),
         ),
       ),
