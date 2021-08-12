@@ -5,11 +5,12 @@ enum AppTheme { Light, Dark }
 final appThemeData = {
   AppTheme.Light: ThemeData(
     brightness: Brightness.light,
-    primaryColor: Colors.green,
+    primaryColor: Colors.grey[200],
+    cardColor: Colors.grey[200],
   ),
   AppTheme.Dark: ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.red[700],
-    cardColor: Colors.red[500],
+    primaryColor: Colors.grey[900],
+    cardColor: Colors.grey[900],
   ),
 };

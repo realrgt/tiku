@@ -14,11 +14,11 @@ class CountriesPage extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () => _themeBloc.add(ThemeChanged(theme: AppTheme.Light)),
-          icon: Icon(Icons.light_mode, color: Colors.amber[200]),
+          icon: Icon(Icons.light_mode),
         ),
         IconButton(
           onPressed: () => _themeBloc.add(ThemeChanged(theme: AppTheme.Dark)),
-          icon: Icon(Icons.dark_mode, color: Colors.black),
+          icon: Icon(Icons.dark_mode),
         ),
       ],
     );
