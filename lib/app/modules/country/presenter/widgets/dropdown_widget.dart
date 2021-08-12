@@ -15,6 +15,7 @@ class DropDown extends StatelessWidget {
         ...REGIONS.map(_buildRegion).toList(),
       ],
       icon: Icon(Icons.more_vert, color: Colors.grey),
+      color: Colors.grey[200],
     );
   }
 
