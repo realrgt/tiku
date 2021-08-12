@@ -19,6 +19,7 @@ class DropDown extends StatelessWidget {
   }
 
   PopupMenuItem<String> _buildRegion(String region) => PopupMenuItem<String>(
+        value: region,
         child: Text(region),
       );
 }
