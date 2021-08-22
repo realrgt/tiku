@@ -27,7 +27,10 @@ class CountryModel extends Country {
       capital: map['capital'],
       flagURL: map['flag'],
       currencies: List<String>.from(
-        (map['currencies'] as List).map((e) => e['code']).toList(),
+        (map['currencies'] as List).map((e) {
+          if (e['code'] == null) return 'USD';
+          return e['code'];
+        }).toList(),
       ),
       languages: List<String>.from(
         (map['languages'] as List).map((e) => e['name']).toList(),
