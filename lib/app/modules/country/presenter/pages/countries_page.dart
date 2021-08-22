@@ -1,30 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../core/presenter/theme/app_themes.dart';
-import '../../../../core/presenter/theme/bloc/bloc.dart';
+import '../bloc/bloc.dart';
 import '../widgets/widget.dart';
 
 class CountriesPage extends StatelessWidget {
   CountriesPage({Key? key}) : super(key: key);
 
-  AppBar _buildAppBar(ThemeBloc _themeBloc) {
-    return AppBar(
-      title: Text('A Matiku'),
-      actions: [
-        IconButton(
-          onPressed: () => _themeBloc.add(ThemeChanged(theme: AppTheme.Light)),
-          icon: Icon(Icons.light_mode),
-        ),
-        IconButton(
-          onPressed: () => _themeBloc.add(ThemeChanged(theme: AppTheme.Dark)),
-          icon: Icon(Icons.dark_mode),
-        ),
-      ],
-    );
-  }
+  final countryBloc = Modular.get<CountryBloc>();
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return ListView(
       children: [
         SizedBox(height: 10.0),
@@ -38,14 +23,40 @@ class CountriesPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 10.0),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          itemCount: 3,
-          itemBuilder: (context, index) => Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
-            child: CountryCard(),
-          ),
+        StreamBuilder<CountryState>(
+          stream: countryBloc.stream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return MessageDisplay(message: 'No data found');
+            }
+
+            final state = snapshot.data;
+
+            if (state is CountryInitial) {
+              return const MessageDisplay(
+                message: 'Fetching data...',
+              );
+            } else if (state is CountryLoading) {
+              return const LoadingWidget();
+            } else if (state is CountryLoaded) {
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemCount: 3,
+                itemBuilder: (context, index) => Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+                  child: CountryCard(),
+                ),
+              );
+            } else if (state is CountryError) {
+              return MessageDisplay(message: state.message);
+            }
+
+            return const MessageDisplay(
+              message: 'Unexpected Error',
+            );
+          },
         ),
         SizedBox(height: 20.0),
       ],
@@ -54,10 +65,11 @@ class CountriesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _themeBloc = BlocProvider.of<ThemeBloc>(context);
+    countryBloc.add(FetchCountries());
+
     return Scaffold(
-      appBar: _buildAppBar(_themeBloc),
-      body: _buildBody(),
+      appBar: CustomAppBar(context),
+      body: _buildBody(context),
     );
   }
 }
