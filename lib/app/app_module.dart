@@ -14,7 +14,7 @@ class AppModule extends Module {
     Bind.factory((i) => Dio()),
     Bind.factory<HiveInterface>((i) => Hive),
     //! Core ViewModels
-    Bind.factory((i) => ThemeBloc()),
+    Bind.lazySingleton((i) => ThemeBloc()),
   ];
 
   @override

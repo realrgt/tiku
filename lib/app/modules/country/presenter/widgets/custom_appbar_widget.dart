@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../core/presenter/theme/app_themes.dart';
 import '../../../../core/presenter/theme/bloc/bloc.dart';
 
 AppBar CustomAppBar(BuildContext context) {
-  final _themeBloc = BlocProvider.of<ThemeBloc>(context);
+  final _themeBloc = Modular.get<ThemeBloc>();
+
   return AppBar(
     title: Text('A Matiku'),
     actions: [
