@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
+import '../bloc/bloc.dart';
 
 class SearchInput extends StatelessWidget {
-  const SearchInput({Key? key}) : super(key: key);
+  SearchInput({Key? key}) : super(key: key);
+
+  final countryBloc = Modular.get<CountryBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +21,10 @@ class SearchInput extends StatelessWidget {
           hintText: 'Search for a country...',
           hintStyle: TextStyle(color: Colors.grey),
         ),
+        onChanged: (value) {
+          if (value.isEmpty) return countryBloc.add(FetchCountries());
+          countryBloc.add(SearchCountries(keyword: value));
+        },
       ),
     );
   }
