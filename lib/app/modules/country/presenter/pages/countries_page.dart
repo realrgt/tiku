@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../bloc/bloc.dart';
 import '../widgets/widget.dart';
 
-class CountriesPage extends StatelessWidget {
+class CountriesPage extends StatefulWidget {
   CountriesPage({Key? key}) : super(key: key);
 
+  @override
+  _CountriesPageState createState() => _CountriesPageState();
+}
+
+class _CountriesPageState extends State<CountriesPage> {
   final countryBloc = Modular.get<CountryBloc>();
 
   Widget _buildBody(BuildContext context) {
@@ -23,32 +29,14 @@ class CountriesPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 10.0),
-        StreamBuilder<CountryState>(
-          stream: countryBloc.stream,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return MessageDisplay(message: 'No data found');
-            }
-
-            final state = snapshot.data;
-
+        BlocBuilder<CountryBloc, CountryState>(
+          builder: (context, state) {
             if (state is CountryInitial) {
-              return const MessageDisplay(
-                message: 'Fetching data...',
-              );
+              return const MessageDisplay(message: 'Fetching data...');
             } else if (state is CountryLoading) {
               return const LoadingWidget();
             } else if (state is CountryLoaded) {
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemCount: 3,
-                itemBuilder: (context, index) => Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
-                  child: CountryCard(),
-                ),
-              );
+              return CountriesList(countries: state.countries);
             } else if (state is CountryError) {
               return MessageDisplay(message: state.message);
             }
@@ -64,12 +52,19 @@ class CountriesPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    countryBloc.add(FetchCountries());
+  void initState() {
+    countryBloc.add(FetchCountriesInRegion(region: 'Africa'));
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(context),
-      body: _buildBody(context),
+      body: BlocProvider(
+        create: (context) => countryBloc,
+        child: _buildBody(context),
+      ),
     );
   }
 }
