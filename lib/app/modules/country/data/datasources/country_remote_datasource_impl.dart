@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 
 import '../../../../core/errors/exceptions.dart';
@@ -28,7 +26,7 @@ class CountryRemoteDatasourceImpl implements ICountryRemoteDatasource {
 
     if (response.statusCode != 200) throw ServerException();
 
-    List data = json.decode(response.data);
+    List data = response.data;
     List<CountryModel> countries =
         data.map((e) => CountryModel.fromJson(e)).toList();
     return countries;

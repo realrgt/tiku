@@ -30,7 +30,7 @@ void main() {
             requestOptions: RequestOptions(
               path: 'https://restcountries.eu/rest/v2/all',
             ),
-            data: fixture('countries.json'),
+            data: jsonDecode(fixture('countries.json')),
             statusCode: 200,
           ),
         );
@@ -78,7 +78,7 @@ void main() {
             requestOptions: RequestOptions(
               path: 'https://restcountries.eu/rest/v2/region/$tRegion',
             ),
-            data: fixture('countries.json'),
+            data: jsonDecode(fixture('countries.json')),
             statusCode: 200,
           ),
         );
@@ -127,7 +127,7 @@ void main() {
             requestOptions: RequestOptions(
               path: 'https://restcountries.eu/rest/v2/name/$tKeyword',
             ),
-            data: fixture('countries.json'),
+            data: jsonDecode(fixture('countries.json')),
             statusCode: 200,
           ),
         );

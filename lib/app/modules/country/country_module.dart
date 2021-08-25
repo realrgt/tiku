@@ -19,7 +19,7 @@ class CountryModule extends Module {
   @override
   List<Bind> get binds => [
         //! ViewModels
-        Bind.factory(
+        Bind.lazySingleton(
           (i) => CountryBloc(
             getAllCountries: i(),
             filterCountriesByRegion: i(),
