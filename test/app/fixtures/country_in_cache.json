@@ -1,0 +1,9 @@
+{
+  "name": "Mozambique",
+  "capital": "Maputo",
+  "region": "Africa",
+  "population": 26423700,
+  "currencies": ["MZN"],
+  "flagURL": "https://restcountries.eu/data/moz.svg",
+  "languages": ["Portuguese"]
+}
