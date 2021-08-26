@@ -7,8 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../fixtures/fixtures_reader.dart';
-
 class MockHiveInterface extends Mock implements HiveInterface {}
 
 class MockHiveBox extends Mock implements Box {}
@@ -57,7 +55,7 @@ void main() {
 
         when(() => mockHiveBox.length).thenReturn(2);
         when(() => mockHiveBox.getAt(any()))
-            .thenReturn(json.decode(fixture('country.json')));
+            .thenReturn(json.encode(tCountries[0]));
         // act
         final result = await datasource.getAllCountries();
         // assert
@@ -91,7 +89,7 @@ void main() {
 
         when(() => mockHiveBox.length).thenReturn(2);
         when(() => mockHiveBox.getAt(any()))
-            .thenReturn(json.decode(fixture('country.json')));
+            .thenReturn(json.encode(tCountries[0]));
         // act
         final result = await datasource.filterCountriesByRegion(tRegion);
         // assert
@@ -111,7 +109,7 @@ void main() {
 
         when(() => mockHiveBox.length).thenReturn(2);
         when(() => mockHiveBox.getAt(any()))
-            .thenReturn(json.decode(fixture('country.json')));
+            .thenReturn(json.encode(tCountries[0]));
         // act
         final result = await datasource.searchCountriesByName(tKeyword);
         // assert
@@ -127,7 +125,7 @@ void main() {
         // arrange
         when(() => mockHiveInterface.openBox(any()))
             .thenAnswer((_) async => mockHiveBox);
-        when(() => mockHiveBox.isNotEmpty).thenReturn(true);
+        when(() => mockHiveBox.isEmpty).thenReturn(true);
         when(() => mockHiveBox.addAll(any())).thenAnswer((_) async => [0, 1]);
         // act
         await datasource.cacheCoutries(tCountries);

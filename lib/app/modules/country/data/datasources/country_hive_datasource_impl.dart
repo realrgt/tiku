@@ -20,8 +20,8 @@ class CountryHiveDatasourceImpl implements ICountryLocalDatasource {
 
     List<CountryModel> countries = [];
     for (var i = 0; i < box.length; i++) {
-      final countryMap = box.getAt(i);
-      final country = CountryModel.fromJson(countryMap);
+      final countryJSON = box.getAt(i);
+      final country = CountryModel.fromCache(jsonDecode(countryJSON));
       countries.add(country);
     }
 
@@ -49,7 +49,7 @@ class CountryHiveDatasourceImpl implements ICountryLocalDatasource {
   @override
   Future<void> cacheCoutries(List<CountryModel> countries) async {
     final box = await hiveInterface.openBox(BOX_COUNTRIES);
-    if (box.isNotEmpty) {
+    if (box.isEmpty) {
       final countriesJSON = _getListJSON(countries);
       await box.addAll(countriesJSON);
     }

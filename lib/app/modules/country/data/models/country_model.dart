@@ -38,6 +38,18 @@ class CountryModel extends Country {
     );
   }
 
+  factory CountryModel.fromCache(Map<String, dynamic> map) {
+    return CountryModel(
+      name: map['name'],
+      population: map['population'],
+      region: map['region'],
+      capital: map['capital'],
+      flagURL: map['flagURL'],
+      currencies: map['currencies'].cast<String>(),
+      languages: map['languages'].cast<String>(),
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,
