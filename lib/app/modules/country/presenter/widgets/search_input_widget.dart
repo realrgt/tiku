@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -23,7 +24,11 @@ class SearchInput extends StatelessWidget {
         ),
         onChanged: (value) {
           if (value.isEmpty) return countryBloc.add(FetchCountries());
-          countryBloc.add(SearchCountries(keyword: value));
+          EasyDebounce.debounce(
+            'countriesSearch',
+            Duration(milliseconds: 500),
+            () => countryBloc.add(SearchCountries(keyword: value)),
+          );
         },
       ),
     );
