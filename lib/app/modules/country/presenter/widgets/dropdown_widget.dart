@@ -17,12 +17,16 @@ class DropDown extends StatelessWidget {
         countryBloc.add(FetchCountriesInRegion(region: value));
       },
       itemBuilder: (context) => <PopupMenuEntry<String>>[
-        ...REGIONS.map(_buildRegion).toList(),
+        ...REGIONS.map((region) => _buildRegion(region, context)).toList(),
       ],
-      icon: Icon(Icons.more_vert, color: Colors.grey),
+      icon: Icon(Icons.more_vert, color: Theme.of(context).accentColor),
+      tooltip: 'Filter By Region',
     );
   }
 
-  PopupMenuItem<String> _buildRegion(String region) =>
-      PopupMenuItem<String>(value: region, child: Text(region));
+  PopupMenuItem<String> _buildRegion(String region, context) =>
+      PopupMenuItem<String>(
+        value: region,
+        child: Text(region, style: Theme.of(context).textTheme.bodyText1),
+      );
 }
