@@ -5,7 +5,7 @@ import 'widget.dart';
 class CountryCard extends StatelessWidget {
   final String flag;
   final String name;
-  final int population;
+  final String population;
   final String region;
   final String capital;
 
