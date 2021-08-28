@@ -1,3 +1,4 @@
+import 'package:a_tiku/app/core/util/number_formatter.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/country.dart';
@@ -5,7 +6,9 @@ import 'widget.dart';
 
 class CountriesList extends StatelessWidget {
   final List<Country> countries;
-  const CountriesList({
+  late final NumberFormatter formatter = NumberFormatter();
+
+  CountriesList({
     Key? key,
     required this.countries,
   }) : super(key: key);
@@ -24,7 +27,7 @@ class CountriesList extends StatelessWidget {
           child: CountryCard(
             flag: country.flagURL,
             name: country.name,
-            population: country.population,
+            population: formatter(country.population),
             region: country.region,
             capital: country.capital,
           ),
