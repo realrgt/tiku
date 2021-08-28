@@ -2,7 +2,7 @@
     package="com.ergito.a_tiku">
    <application
         android:label="a_tiku"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
