@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
@@ -7,8 +8,8 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 1.5,
-      child: const Center(
-        child: CircularProgressIndicator(),
+      child: Center(
+        child: SpinKitCircle(color: Theme.of(context).accentColor, size: 50.0),
       ),
     );
   }

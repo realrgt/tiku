@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'widget.dart';
 
@@ -25,22 +24,25 @@ class CountryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SvgPicture.network(
-            flag,
-            width: 200,
-            height: 100,
-            fit: BoxFit.cover,
-            placeholderBuilder: (_) => FlagLoading(),
-          ),
+          FlagDisplay(flag: flag),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Label(name, fontSize: 20, fontWeight: FontWeight.bold),
-                Label('Population: $population'),
-                Label('Region: $region'),
-                Label('Capital: $capital'),
+                Label(name, style: Theme.of(context).textTheme.headline6),
+                Label(
+                  'Population: $population',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                Label(
+                  'Region: $region',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                Label(
+                  'Capital: $capital',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
                 SizedBox(height: 20),
               ],
             ),

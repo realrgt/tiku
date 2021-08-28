@@ -16,7 +16,7 @@ class FlagLoading extends StatelessWidget {
             top: 20.0,
             bottom: 20.0,
           ),
-          child: SpinKitWave(color: Colors.white, size: 50.0),
+          child: SpinKitWave(color: Theme.of(context).accentColor, size: 50.0),
         ),
       ],
     );

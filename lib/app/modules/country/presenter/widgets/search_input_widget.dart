@@ -14,13 +14,14 @@ class SearchInput extends StatelessWidget {
     return Card(
       child: TextField(
         keyboardType: TextInputType.text,
-        style: TextStyle(color: Colors.black),
+        style: Theme.of(context).textTheme.bodyText2,
+        cursorColor: Theme.of(context).accentColor,
         decoration: InputDecoration(
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.only(left: 14.0, top: 15.0),
-          prefixIcon: Icon(Icons.search, color: Colors.grey),
+          contentPadding: const EdgeInsets.only(left: 14.0, top: 14.0),
+          prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
           hintText: 'Search for a country...',
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: Theme.of(context).textTheme.bodyText2,
         ),
         onChanged: (value) {
           if (value.isEmpty) return countryBloc.add(FetchCountries());

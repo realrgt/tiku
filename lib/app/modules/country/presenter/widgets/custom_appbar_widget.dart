@@ -8,7 +8,7 @@ AppBar CustomAppBar(BuildContext context) {
   final _themeBloc = Modular.get<ThemeBloc>();
 
   return AppBar(
-    title: Text('A Matiku'),
+    title: Text('A Matiku', style: Theme.of(context).textTheme.headline6),
     actions: [
       IconButton(
         onPressed: () => _themeBloc.add(ThemeChanged(theme: AppTheme.Light)),

@@ -2,27 +2,15 @@ import 'package:flutter/material.dart';
 
 class Label extends StatelessWidget {
   final String text;
-  final double fontSize;
-  final FontWeight fontWeight;
+  final TextStyle? style;
 
-  Label(
-    this.text, {
-    Key? key,
-    this.fontSize = 18.0,
-    this.fontWeight = FontWeight.normal,
-  }) : super(key: key);
+  Label(this.text, {Key? key, this.style}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-        ),
-      ),
+      padding: const EdgeInsets.all(2.0),
+      child: Text(text, style: style),
     );
   }
 }
