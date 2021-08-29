@@ -9,6 +9,7 @@ AppBar CustomAppBar(BuildContext context) {
 
   return AppBar(
     title: Text('A Matiku', style: Theme.of(context).textTheme.headline6),
+    backgroundColor: Theme.of(context).primaryColor,
     actions: [
       IconButton(
         onPressed: () => _themeBloc.add(ThemeChanged(theme: AppTheme.Light)),
