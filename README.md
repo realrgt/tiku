@@ -1,16 +1,27 @@
-# a_tiku
+# Matiku
 
-A new Flutter application.
 
-## Getting Started
+![GitHub](https://img.shields.io/github/license/realrgt/tiku)
+![GitHub repo size](https://img.shields.io/github/repo-size/realrgt/tiku?color=red)
 
-This project is a starting point for a Flutter application.
+This is a sample project.
 
-A few resources to get you started if this is your first Flutter project:
+Matiku means countries in my native language (XiChangana). The idea was to consume the [restcountries](https://restcountries.eu/) API and create an app that allows us to list, search, and group countries according to the region they belong to. I've developed this project with the purpose of exercising programming and flutter advanced concepts. The result product of this work is hosted [here](https://play.google.com/store/apps/dev?id=5627334165401378774).
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## What was exercised:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [x] Offline First on Flutter (Dio and Hive)
+- [x] SOLID Principles in Flutter
+- [x] Clean Code / Clean Architecture in Flutter
+- [x] Unit Tests in Flutter (including stream tests)
+- [x] BloC Pattern - State Management
+- [x] BloC Tests
+- [x] Flutter Modular
+- [x] Dependency Injection
+- [x] Theming App (Dark-Light modes & Google Fonts)
+- [x] Debounce - HTTP calls limiting
+- [x] App Deployment
+- [x] CI/CD in Flutter-Codemagic
+
+Most of the ideas here implemented were courtesy of the content disseminated by the Reso Coder and Flutterando channels.
+
